@@ -5,6 +5,6 @@
 <img src=".github/logo.png">
 </p>
 
-An course of Node.js from Pereira's Book.
+A course of Node.js from Pereira's Book.
 
 Creator: Caio Ribeiro Pereira

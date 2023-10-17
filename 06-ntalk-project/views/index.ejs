@@ -1,0 +1,19 @@
+<% include ./header %>
+
+  <div class="container">
+    <header class="mt-5">
+      <h1>Ntalk</h1>
+      <h4>Bem-vindo!</h4>
+    </header>
+    <section>
+      <form action="/entrar" method="post">
+        <input type="text" name="nome" placeholder="Nome" class="form-control">
+        <br>
+        <input type="text" name="email" placeholder="E-mail" class="form-control">
+        <br>
+        <button type="submit" class="btn btn-primary">Entrar</button>
+      </form>
+    </section>
+  </div>
+
+  <% include ./footer %>
