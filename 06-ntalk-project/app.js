@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var indexRouter = require('./routes/index');
 var contatosRouter = require('./routes/contatos');
 const session = require('express-session');
+const methodOverride = require('method-override');
 
 var app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({ resave: false, saveUninitialized: false, secret: 'keyboard cat' }));
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

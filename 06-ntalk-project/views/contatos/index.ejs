@@ -5,9 +5,39 @@
       <h1>Ntalk - Agenda de contatos</h1>
     </header>
     <section>
-      <p>Bem-vindo <%- usuario.nome %></p>
-      <a href="/sair">Sair</a>
+      <p>Bem-vindo <%- usuario.nome %>! <a href="/sair">Sair</a></p>
     </section>
+    <form action="/contatos" method="post">
+      <h2>Novo contato</h2>
+      <input type="text" name="nome" placeholder="Nome" class="form-control mb-3">
+      <input type="text" name="email" placeholder="E-mail" class="form-control mb-3">
+      <button type="submit" class="btn btn-primary">Cadastrar novo contato</button>
+    </form>
+    <h2 class="mt-3">Lista de contatos</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% usuario.contatos.forEach(function(contato, index){ %>
+          <tr>
+            <td><%- contato.nome %></td>
+            <td><%- contato.email %></td>
+            <td>
+              <a class="btn btn-primary" href="/contatos/<%- index %>">Ver</a>
+              <a class="btn btn-warning" href="/contatos/<%- index %>/editar">Editar</a>
+              <form class="d-inline" action="/contatos/<%- index %>?_method=DELETE" method="post">
+                <button type="submit" class="btn btn-danger">Excluir</button>
+              </form>
+            </td>
+          </tr>
+      </tbody>
+      <% }) %>
+    </table>
   </div>
 
-<% include ../footer %>
+  <% include ../footer %>

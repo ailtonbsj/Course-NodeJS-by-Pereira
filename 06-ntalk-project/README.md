@@ -13,4 +13,7 @@ npm i
 
 # Express Session
 npm i express-session
+
+# Express Method Override
+npm i method-override
 ```
