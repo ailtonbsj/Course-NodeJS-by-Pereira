@@ -1,15 +1,12 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-
-var indexRouter = require('./routes/index');
-var contatosRouter = require('./routes/contatos');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const indexRouter = require('./routes/index');
+const contatosRouter = require('./routes/contatos');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const app = express();
 
-var app = express();
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -22,5 +19,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/contatos', contatosRouter);
+
+app.use(function (req, res, next) {
+    res.status(404);
+    res.render('errors/not-found', { title: 'Não encontrado!' });
+});
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('errors/server-error', { 
+        title: 'Erro!',
+        message: err.message.replace(/[\u00A0-\u9999<>\&]/g, i => '&#' + i.charCodeAt(0) + ';')
+    });
+});
 
 module.exports = app;

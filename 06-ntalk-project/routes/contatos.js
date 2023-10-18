@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
+const autenticar = require('../middlewares/autenticador');
 const contatos = require('../controller/contatos');
 
-router.get('/', contatos.index);
-router.get('/:id', contatos.show);
-router.post('/', contatos.create);
-router.get('/:id/editar', contatos.edit);
-router.put('/:id', contatos.update);
-router.delete('/:id', contatos.destroy);
+router.get('/', autenticar, contatos.index);
+router.get('/:id', autenticar, contatos.show);
+router.post('/', autenticar, contatos.create);
+router.get('/:id/editar', autenticar, contatos.edit);
+router.put('/:id', autenticar, contatos.update);
+router.delete('/:id', autenticar, contatos.destroy);
 
 module.exports = router;

@@ -1,28 +1,23 @@
 const ContatoController = {
     index: function (req, res) {
         const usuario = req.session.usuario;
-        if (!usuario) {
-            res.redirect('/');
-            return;
-        }
         res.render('contatos/index', { title: 'Contatos', usuario });
     },
     edit: function (req, res) {
         const usuario = req.session.usuario;
-        if (!usuario || !req.params.id) {
-            res.redirect('/contatos');
+        var contato = usuario.contatos[req.params.id];
+        if (!contato) {
+            res.redirect('/');
             return;
         }
-        var contato = usuario.contatos[req.params.id];
         res.render('contatos/edit', { title: 'Editar contato', usuario, id: req.params.id, contato });
     },
     show: function (req, res) {
-        const id = req.params.id;
-        if (!id) {
-            res.redirect('/contatos');
+        const contato = req.session.usuario.contatos[req.params.id];
+        if (!contato) {
+            res.redirect('/');
             return;
         }
-        const contato = req.session.usuario.contatos[id];
         res.render('contatos/show', { title: 'Detalhes do contato', contato });
     },
     create: function (req, res) {
