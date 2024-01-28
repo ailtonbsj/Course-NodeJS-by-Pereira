@@ -19,4 +19,7 @@ npm i method-override
 
 # Socket IO
 npm i socket.io
+
+# Consign
+npm i consign
 ```

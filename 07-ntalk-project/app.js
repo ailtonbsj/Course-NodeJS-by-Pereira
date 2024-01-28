@@ -1,4 +1,5 @@
 const express = require('express');
+const consign = require('consign');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const indexRouter = require('./routes/index');
@@ -24,6 +25,8 @@ app.use('/', indexRouter);
 app.use('/contatos', contatosRouter);
 app.use('/chat', chatRouter);
 
+consign().include('sockets').into(io);
+
 app.use(function (req, res, next) {
     res.status(404);
     res.render('errors/not-found', { title: 'Não encontrado!' });
@@ -34,14 +37,6 @@ app.use(function (err, req, res, next) {
         title: 'Erro!',
         message: err.message.replace(/[\u00A0-\u9999<>\&]/g, i => '&#' + i.charCodeAt(0) + ';')
     });
-});
-
-io.sockets.on('connection', function(client){
-    client.on('send-server', function(data){
-        const msg = `<b>${data.nome}:</b> ${data.msg}<br>`;
-        client.emit('send-client', msg);
-        client.broadcast.emit('send-client', msg);
-    })
 });
 
 module.exports = { app, server };
