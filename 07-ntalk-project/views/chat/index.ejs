@@ -1,29 +1,31 @@
 <% include ../header %>
 
-<script src="/socket.io/socket.io.js"></script>
-<script>
-    const socket = io.connect('http://dell-g15.local:3000');
-    socket.on('send-client', function (msg) {
-        document.getElementById('chat').innerHTML += msg;
-    });
-    const enviar = function () {
-        const nome = document.getElementById('nome').value;
-        const msg = document.getElementById('msg').value;
-        console.log({ nome, msg });
-        socket.emit('send-server', { nome, msg });
-    }
-</script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io.connect('http://dell-g15.local:3000');
 
-<div class="container">
-    <header class="mt-5">
-        <h1>Ntalk - Chat</h1>
-    </header>
-    <section>
-        <pre id="chat"></pre>
-        <input type="hidden" id="nome" value="<%- usuario.nome %>">
-        <input type="text" id="msg" placeholder="Mesagem">
-        <button onclick="enviar()">Enviar</button>
-    </section>
-</div>
+        socket.on('send-client', function (msg) {
+            const chat = document.getElementById('chat');
+            chat.innerHTML += msg;
+        });
+        
+        const enviar = function () {
+            const msg = document.getElementById('msg').value;
+            socket.emit('send-server', { msg });
+        }
+
+        socket.emit('join', "<%- room %>");
+    </script>
+
+    <div class="container">
+        <header class="mt-5">
+            <h1>Ntalk - Chat</h1>
+        </header>
+        <section>
+            <pre id="chat"></pre>
+            <input type="text" id="msg" placeholder="Mesagem">
+            <button onclick="enviar()">Enviar</button>
+        </section>
+    </div>
 
 <% include ../footer %>

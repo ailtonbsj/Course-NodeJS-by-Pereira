@@ -7,7 +7,7 @@ const HomeController = {
         var nome = req.body.nome;
         if(email && nome) {
             var usuario = {email, nome};
-            usuario['contatos'] = [];
+            usuario['contatos'] = [{nome: "a", email: "a"}, {nome: "b", email: "b"}];
             req.session.usuario = usuario;
             res.redirect('/contatos');
         } else {

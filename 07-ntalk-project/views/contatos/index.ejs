@@ -1,5 +1,38 @@
 <% include ../header %>
 
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io.connect('http://dell-g15.local:3000');
+
+    const notify = function (data) {
+      const id = 'notify_' + data.el;
+      const notify = document.getElementById(id);
+      notify.textContent = data.msg;
+      notify.classList.remove(['label-default','label-success', 'label-danger']);
+      if(data.msg === 'Online') {
+        notify.classList.add('label-success');
+      } else if(data.msg === 'Offline') {
+        notify.classList.add('label-default');
+      } else {
+        notify.classList.add('label-danger');
+      }
+    }
+
+    socket.on('notify-onlines', function (email) {
+      notify({ el: email, msg: 'Online' });
+    });
+
+    socket.on('notify-offline', function (email) {
+      notify({ el: email, msg: 'Offline' });
+    });
+
+    socket.on('new-message', function (data) {
+      notify({ el: data.email, msg: 'Messagem' });
+      const chat = document.getElementById('chat_' + data.email);
+      chat.href += '?s=' + data.sala;
+    });
+  </script>
+
   <div class="container">
     <header class="mt-5">
       <h1>Ntalk - Agenda de contatos</h1>
@@ -19,6 +52,7 @@
         <tr>
           <th scope="col">Nome</th>
           <th scope="col">E-mail</th>
+          <th scope="col">Status</th>
           <th scope="col">Ação</th>
         </tr>
       </thead>
@@ -28,16 +62,19 @@
             <td><%- contato.nome %></td>
             <td><%- contato.email %></td>
             <td>
-              <a class="btn btn-secondary" href="/chat/<%- contato.email %>">Conversar</a>
+              <span class="label label-default" id="notify_<%- contato.email %>">Offline</span></td>
+            <td>
+              <a class="btn btn-default" href="/chat/<%- contato.email %>"
+                id="chat_<%- contato.email %>">Conversar</a>
               <a class="btn btn-primary" href="/contatos/<%- index %>">Ver</a>
               <a class="btn btn-warning" href="/contatos/<%- index %>/editar">Editar</a>
-              <form class="d-inline" action="/contatos/<%- index %>?_method=DELETE" method="post">
+              <form class="visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline" action="/contatos/<%- index %>?_method=DELETE" method="post">
                 <button type="submit" class="btn btn-danger">Excluir</button>
               </form>
             </td>
           </tr>
+          <% }) %>
       </tbody>
-      <% }) %>
     </table>
   </div>
 

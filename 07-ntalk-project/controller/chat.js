@@ -3,7 +3,7 @@ const ChatController = {
         const result = {
             title: 'Chat',
             email: req.params.email,
-            usuario: req.session.usuario
+            room: req.query.s
         };
         res.render('chat/index', result);
     }
